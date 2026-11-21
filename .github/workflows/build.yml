@@ -48,6 +48,22 @@ jobs:
           fi
           echo "KEYSTORE_FILE=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
 
+      - name: Check proxy secrets
+        env:
+          PROXY_HOST: ${{ secrets.PROXY_HOST }}
+          PROXY_PORT: ${{ secrets.PROXY_PORT }}
+          PROXY_USER: ${{ secrets.PROXY_USER }}
+          PROXY_PASS: ${{ secrets.PROXY_PASS }}
+        run: |
+          missing=""
+          for v in PROXY_HOST PROXY_PORT PROXY_USER PROXY_PASS; do
+            if [ -z "${!v}" ]; then missing="$missing $v"; fi
+          done
+          if [ -n "$missing" ]; then
+            echo "::error::Пустые секреты:$missing. Добавьте их в Settings -> Secrets and variables -> Actions -> вкладка Secrets (не Variables)."
+            exit 1
+          fi
+
       - name: Build
         env:
           PROXY_HOST: ${{ secrets.PROXY_HOST }}
