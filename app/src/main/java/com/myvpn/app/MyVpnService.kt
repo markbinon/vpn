@@ -83,11 +83,13 @@ class MyVpnService : VpnService() {
                   cache-size: 10000
                 """.trimIndent() + "\n"
             )
-            TProxyService.TProxyStartService(cfg.absolutePath, pfd.fd)
+            if (!TProxyService.TProxyStartService(cfg.absolutePath, pfd.fd)) {
+                throw IllegalStateException("Не удалось запустить туннель")
+            }
             tunnelStarted = true
             VpnState.set(true)
         } catch (e: Throwable) {
-            VpnState.error = e.message ?: e.javaClass.simpleName
+            VpnState.error = e.toString()
             cleanup()
             stopForeground(true)
             stopSelf()

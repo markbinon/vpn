@@ -1,12 +1,16 @@
 package hev.htproxy;
 
-/** JNI-обёртка над hev-socks5-tunnel. Имя пакета и класса зашито в нативной библиотеке, не менять. */
+/** JNI-обёртка над hev-socks5-tunnel. Имя пакета, класса и сигнатуры методов зашиты в нативной библиотеке, не менять. */
 public class TProxyService {
     static {
         System.loadLibrary("hev-socks5-tunnel");
     }
 
-    public static native void TProxyStartService(String configPath, int fd);
+    public static native boolean TProxyStartService(String configPath, int fd);
 
-    public static native void TProxyStopService();
+    public static native boolean TProxyStopService();
+
+    public static native boolean TProxyIsRunning();
+
+    public static native long[] TProxyGetStats();
 }
