@@ -1,0 +1,9 @@
+*.iml
+.gradle/
+build/
+local.properties
+.idea/
+*.jks
+*.keystore
+app/src/main/jni/hev-socks5-tunnel/
+app/.cxx/
